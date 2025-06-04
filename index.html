@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HODL Kong 8-Bit Arcade</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      font-family: 'Press Start 2P', monospace;
+      background: url('background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #0f0;
+      text-align: center;
+      padding: 2rem;
+    }
+    .container {
+      background: rgba(0,0,0,0.8);
+      padding: 2rem;
+      margin: auto;
+      width: 80%;
+      border: 4px solid #0f0;
+      border-radius: 10px;
+    }
+    input, button {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin: 0.5rem;
+      background: black;
+      color: #0f0;
+      border: 2px solid #0f0;
+    }
+    pre {
+      color: #0ff;
+      background: black;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>👑 HODL KONG ARCADE 👑</h1>
+    <img src="hodl_kong.png" width="300" alt="Kong & Princess" />
+
+    <h2>🏆 Submit Score</h2>
+    <input type="text" id="username" placeholder="Your Name" />
+    <input type="number" id="score" placeholder="Your Score" />
+    <button onclick="submitScore()">Submit</button>
+    <pre id="scoreResult"></pre>
+
+    <h2>🎁 Claim Rewards</h2>
+    <input type="text" id="wallet" placeholder="WAX Wallet" />
+    <button onclick="claimReward()">Claim</button>
+    <pre id="claimResult"></pre>
+  </div>
+
+  <script>
+    const BACKEND = "https://your-backend.onrender.com";
+
+    async function submitScore() {
+      const username = document.getElementById("username").value;
+      const score = document.getElementById("score").value;
+      const res = await fetch(BACKEND + "/api/leaderboard", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, score })
+      });
+      const data = await res.json();
+      document.getElementById("scoreResult").textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function claimReward() {
+      const wallet = document.getElementById("wallet").value;
+      const res = await fetch(BACKEND + "/api/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ wallet })
+      });
+      const data = await res.json();
+      document.getElementById("claimResult").textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
