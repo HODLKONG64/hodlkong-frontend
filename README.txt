@@ -1,0 +1,1 @@
+This is the base 8-bit HODL Kong game. Open index.html in a browser to play.
